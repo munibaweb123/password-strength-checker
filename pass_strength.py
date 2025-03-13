@@ -109,6 +109,6 @@ if st.button("Check Strength"):
         
         # Debugging output
         st.write("Current Password:", normalized_password)
-        st.write("Password History:", list(st.session_state.password_history))
+        
     else:
         st.error("Please enter a password to check its strength.")
