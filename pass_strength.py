@@ -88,13 +88,20 @@ password = st.text_input("paste your generated password or Enter your password h
 
 if st.button("Check Strength"):
     if password:
-        strength, feedback = check_password_strength(password)
+        normalized_password = password.strip()  # Normalize the password
+        strength, feedback = check_password_strength(normalized_password)
         st.subheader(strength)
         for msg in feedback:
             st.write(msg)
         
         # Store password in history if it's not a duplicate
-        if password not in st.session_state.password_history:
-            st.session_state.password_history.append(password)
+        if normalized_password not in st.session_state.password_history:
+            st.session_state.password_history.append(normalized_password)
+        else:
+            st.error("This password has been used recently. Please choose a new one.")
+        
+        # Debugging output
+        st.write("Current Password:", normalized_password)
+        st.write("Password History:", list(st.session_state.password_history))
     else:
         st.error("Please enter a password to check its strength.")
