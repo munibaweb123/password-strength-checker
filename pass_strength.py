@@ -68,11 +68,13 @@ def check_password_strength(password):
 st.title("🔒 Password Strength Check Meter")
 st.header('Generate your password from here:')
 
+length = st.slider('Select password length', min_value=5, max_value=15)
+
 # Use columns for better layout
 col1, col2 = st.columns(2)
 
 with col1:
-    length = st.slider('Select password length', min_value=5, max_value=15)
+    
     use_digits = st.checkbox('Include Digits:')
     use_special = st.checkbox('Include special characters:')
     
