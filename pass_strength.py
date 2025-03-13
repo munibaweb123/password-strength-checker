@@ -67,11 +67,18 @@ def check_password_strength(password):
 # Streamlit UI
 st.title("🔒 Password Strength Check Meter")
 st.header('Generate your password from here:')
-length = st.slider('select password length', min_value=5, max_value=15)
-use_digits = st.checkbox('Include Digits:')
-use_special = st.checkbox('Include special characters:')
-use_upper = st.checkbox('Include uppercase alphabets')
-use_lower = st.checkbox('Include lowercase alphabets')
+
+# Use columns for better layout
+col1, col2 = st.columns(2)
+
+with col1:
+    length = st.slider('Select password length', min_value=5, max_value=15)
+    use_digits = st.checkbox('Include Digits:')
+    use_special = st.checkbox('Include special characters:')
+    
+with col2:
+    use_upper = st.checkbox('Include uppercase alphabets')
+    use_lower = st.checkbox('Include lowercase alphabets')
 
 # Sidebar for password history
 st.sidebar.header("Password History")
@@ -82,7 +89,7 @@ else:
     st.sidebar.write("No password history available.")
 
 if st.button('Generate password'):
-    password = generate_password(length,use_digits,use_special,use_upper,use_lower)
+    password = generate_password(length, use_digits, use_special, use_upper, use_lower)
     st.write(f'Generated Password: `{password}`')
 password = st.text_input("paste your generated password or Enter your password here to check:", type="password")
 
