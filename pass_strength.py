@@ -1,7 +1,24 @@
 import re
 import streamlit as st
 from collections import deque
+import string
+import random
 
+def generate_password(length,use_digits,use_special,use_upper,use_lower):
+    characters = string.ascii_letters
+    if use_digits:
+        characters += string.digits
+
+    if use_special:
+        characters += string.punctuation
+    
+    if use_upper:
+        characters += string.ascii_uppercase
+
+    if use_lower:
+        characters += string.ascii_lowercase
+
+    return ''.join(random.choice(characters) for _ in range(length))
 # Initialize password history in session state
 if 'password_history' not in st.session_state:
     st.session_state.password_history = deque(maxlen=10)
@@ -48,8 +65,26 @@ def check_password_strength(password):
         return "❌ Weak Password - Improve it using the suggestions above.", feedback
 
 # Streamlit UI
-st.title("🔒 Password Strength Checker")
-password = st.text_input("Enter your password:", type="password")
+st.title("🔒 Password Strength Check Meter")
+st.header('Generate your password from here:')
+length = st.slider('select password length', min_value=5, max_value=15)
+use_digits = st.checkbox('Include Digits:')
+use_special = st.checkbox('Include special characters:')
+use_upper = st.checkbox('Include uppercase alphabets')
+use_lower = st.checkbox('Include lowercase alphabets')
+
+# Sidebar for password history
+st.sidebar.header("Password History")
+if st.session_state.password_history:
+    for pwd in st.session_state.password_history:
+        st.sidebar.write(pwd)
+else:
+    st.sidebar.write("No password history available.")
+
+if st.button('Generate password'):
+    password = generate_password(length,use_digits,use_special,use_upper,use_lower)
+    st.write(f'Generated Password: `{password}`')
+password = st.text_input("paste your generated password or Enter your password here to check:", type="password")
 
 if st.button("Check Strength"):
     if password:
